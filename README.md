@@ -77,7 +77,7 @@ weights = {
 
 ### 4.3 Dynamic trend scaling
 
-$s = \operatorname{clip}\bigl(1 + (f_{ADX}-0.5),\;0.5,\;1.5\bigr)$
+$s = clip(1 + (f_ADX - 0.5), 0.5, 1.5)$
 
 ### 4.4 Logit & sigmoid
 
