@@ -1,4 +1,4 @@
-# **signals.py – Internal Design Reference**
+# **Internal Design Reference**
 
 > *Scope –* formulation, signal generation, modelling loop, LLM layer, news‑sentiment, weights & probabilities.
 
