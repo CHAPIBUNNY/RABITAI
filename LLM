@@ -1,0 +1,70 @@
+# Takes the symbol, indicators, and model decision (BUY/SELL) into account.
+
+def generate_meta_signal(symbol: str, indicators: Dict[str, Any], headlines: list, multi_summary: str, probability: float) -> Tuple[str, float, str, str]:
+    """
+    Ask GPT‑4 for a trade signal and return
+    (signal, price, reason, indicator_details).
+
+    • Works with any GPT‑3.5 / GPT‑4 family model.
+    • Post‑validates the JSON against _TRADE_SCHEMA.
+    """
+
+    # ---------- helper ------------------------------------------------
+    def to_scalar(v): return v.item() if hasattr(v, "item") else v
+
+    price      = to_scalar(indicators.get("price", 0))
+    sma_50     = to_scalar(indicators.get("SMA50", 0))
+    sma_200    = to_scalar(indicators.get("SMA200", 0))
+    macd       = to_scalar(indicators.get("MACD.macd", 0))
+    macd_sig   = to_scalar(indicators.get("MACD.signal", 0))
+    ao         = to_scalar(indicators.get("AO", 0))
+    cci        = to_scalar(indicators.get("CCI20", 0))
+    rsi        = to_scalar(indicators.get("RSI", 50))
+    atr        = to_scalar(indicators.get("ATR", price * 0.01))
+    ema_9      = to_scalar(indicators.get("EMA9", 0))
+    ema_21     = to_scalar(indicators.get("EMA21", 0))
+    stoch_rsi  = to_scalar(indicators.get("Stoch.RSI", 0))
+    if stoch_rsi == 0:
+        # Fetch price data for the symbol and compute RSI and Stoch RSI
+        ohlcv_df = fetch_ohlcv(symbol)
+        if ohlcv_df is not None and not ohlcv_df.empty:
+            prices = ohlcv_df["Close"]
+            rsi_series = compute_rsi(prices, window=14)
+            stoch_rsi = compute_stoch_rsi(rsi_series, window=14)
+        else:
+            stoch_rsi = 0
+    volume     = to_scalar(indicators.get("volume", 0))
+    vix        = to_scalar(indicators.get("vix", None))
+    if vix is None or vix == 20:
+        try:
+            vix_ticker = yf.Ticker("^VIX")
+            hist = vix_ticker.history(period="5d", interval="1d")
+            if not hist.empty:
+                vix = float(hist["Close"].dropna().iloc[-1])
+        except Exception as e:
+            print(f"VIX fetch error: {e}")
+            vix = 20.0
+    adx        = to_scalar(indicators.get("ADX", 0))
+
+    trend_strength = (adx / 40) + ((price - sma_50) / sma_50 if sma_50 else 0)
+    gap_pct        = (price - sma_50) / sma_50 if sma_50 else 0
+    atr_breakout   = atr / price if price else 0
+    volume_trend   = np.log(volume) if volume > 0 else 0
+
+    poc = to_scalar(indicators.get("poc", 0))
+    hvn_low, hvn_high = indicators.get("hvn_band", (0, 0))
+
+    indicator_details = (
+        f"Trend Strength: {trend_strength:.2f}\n"
+        f"Gap Percentage: {gap_pct:.2%}\n"
+        f"ATR Breakout: {atr_breakout:.2f}\n"
+        f"Volume Trend: {volume_trend:.2f}\n"
+        f"SMA50: {sma_50:.2f}, SMA200: {sma_200:.2f}\n"
+        f"MACD: {macd:.2f}, MACD Signal: {macd_sig:.2f}\n"
+        f"AO: {ao:.2f}, CCI20: {cci:.2f}, RSI: {rsi:.2f}\n"
+        f"EMA9: {ema_9:.2f}, EMA21: {ema_21:.2f}, ADX: {adx:.2f}\n"
+        f"Stoch RSI: {stoch_rsi:.2f}, VIX: {vix:.2f}\n"
+        f"POC: {poc:.2f}, HVN band: {hvn_low:.2f}–{hvn_high:.2f}\n"
+    )
+
+    user_prompt = f"""
