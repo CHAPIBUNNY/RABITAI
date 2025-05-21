@@ -1,5 +1,4 @@
 Harnessing Logistic Regression for Probabilistic Trade Signals
-By Your Name – Date
 
 ⸻
 
@@ -10,6 +9,7 @@ In systematic trading, the holy grail is turning a cacophony of market signals i
 ⸻
 
 Why Go Probabilistic?
+
 	•	Nuance over binary: A pure BUY/SELL algorithm says “Go,” or “No go.” A probability (e.g. 72 %) allows you to size, scale and risk-manage dynamically.
 	•	Risk control: You can throttle position size when the model is less certain and ramp up when confidence is high.
 	•	Portfolio construction: Allocating capital by probability smooths P&L and reduces drawdowns compared to equal-weight signals.
@@ -26,6 +26,7 @@ Rather than treat all regimes equally, we amplify or dampen the non-ADX componen
 \text{scale} = 1 + (\text{ADX}_\text{norm} - 1)
 so stronger trends (high ADX) boost the impact of EMA/MACD, AO, etc., while choppy markets self-dampen.
 	3.	Weighted logit
+
 We maintain a dictionary of weights, e.g.:
 
 weights = {
@@ -48,6 +49,7 @@ logit             = adx_contrib + scaled_non_adx + bias
 where feats is our normalized feature dictionary and bias is a small offset (e.g. 0.1) to calibrate overall skew.
 
 	4.	Sigmoid → probability
+
 Finally,
 p = \frac{1}{1 + e^{-\text{logit}}}
 converts the unbounded logit into a neatly bounded 0 – 1 probability, which we present as a percentage.
@@ -74,12 +76,14 @@ Dynamic Scaling by Regime
 A static weight on, say, MACD can misfire in a whippy market. By scaling all non-ADX terms by
 \text{scale} = 1 + (\text{ADX}_{\rm norm} - 1),
 we ensure:
+
 	•	High-ADX (trending) → amplify momentum and cycle indicators
 	•	Low-ADX (choppy)  → dampen them, forcing the model to lean on more robust signals (e.g. entropy, multi-TF consensus)
 
 ⸻
 
 Weights, Bias & Calibration
+
 	•	Weights reflect each indicator’s historical Sharpe or information coefficient.
 	•	Bias nudges the model toward a slight bullish or bearish tilt if your backtest results show an asymmetric edge.
 	•	Re-training dynamic weights on your own RL training sheet (e.g. via calculate_dynamic_weights()) adapts the model to evolving markets.
@@ -87,6 +91,7 @@ Weights, Bias & Calibration
 ⸻
 
 From Logit to Live Trading
+
 	1.	Compute p every minute/15 min.
 	2.	Compare to thresholds: e.g. open only if p>60\%.
 	3.	Size by p: larger positions when p\to100\%, smaller as p\to50\%.
@@ -95,6 +100,7 @@ From Logit to Live Trading
 ⸻
 
 Benefits & Extensions
+
 	•	Interpretability: You can break down the final probability into each indicator’s contribution.
 	•	Modularity: Add new features (e.g. sentiment score) by simply extending feats and weights.
 	•	Robustness: The sigmoid output naturally saturates near 0/1, preventing runaway convictions.
