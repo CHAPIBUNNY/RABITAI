@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>AI Signal Blueprint | RabitAI Trading Signals</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="favicon.png" rel="icon">
+  <style>
+    body {
+      background: #f8f9fa;
+    }
+
+    .hero {
+      background: #212529;
+      color: #fff;
+      padding: 3rem 1rem;
+      border-radius: 0.5rem;
+      margin-bottom: 2rem;
+    }
+
+    .section-title {
+      border-bottom: 2px solid #0d6efd;
+      padding-bottom: 0.25rem;
+      margin-bottom: 1.5rem;
+    }
+
+    pre,
+    code {
+      background: #f1f3f5;
+      border-radius: 0.25rem;
+      padding: 0.5rem;
+    }
+
+    .callout {
+      background: #e9ecef;
+      border-left: 4px solid #0d6efd;
+      padding: 1rem;
+      margin-bottom: 1.5rem;
+    }
+  </style>
+</head>
+
+<body>
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark mb-4 sticky-top">
+    <div class="container">
+      <a class="navbar-brand" href="#"><img src="cijy2q3vl0ab7jwcz1v9.jpg" width="100" style="border-radius: 100px;"></a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+        aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item"><a class="nav-link" href="#architecture">Architecture</a></li>
+          <li class="nav-item"><a class="nav-link" href="#features">Features</a></li>
+          <li class="nav-item"><a class="nav-link" href="#regime">Regime Detection</a></li>
+          <li class="nav-item"><a class="nav-link" href="#probability">Probability</a></li>
+          <li class="nav-item"><a class="nav-link" href="#sentiment">Sentiment</a></li>
+          <li class="nav-item"><a class="nav-link" href="#report">Report</a></li>
+          <li class="nav-item"><a class="nav-link" href="#lessons">Lessons</a></li>
+          <li class="nav-item"><a class="nav-link" href="#join">Join</a></li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+  <div class="container">
+    <div class="hero text-left mb-5" style="background: url('hero-bg-abstract.png') right center / cover no-repeat; position: relative;">
+      <h1 class="display-4 text-left">AI Signal Blueprint</h1>
+      <p class="lead text-left">How I Engineered an 79% Win-Rate Trading Algorithm</p>
+      <p class=" text-left">By <strong>Charl Van Zyl</strong> | <span class="text-info">RABITAI Trading Signals</span></p>
+      <a href="https://www.rabitai.trade" class="btn btn-lg mt-3  text-left" style="background-color: rgb(226, 43, 198);">JOIN THE COMMUNITY</a>
+      <div class="mt-4 text-left">Built for precision. Driven by Data.</div>
+    </div>
+
+    <div class="mb-5">
+      <h2 class="section-title">Introduction</h2>
+      <div>
+        <p>I set out to build a data-driven, adaptive trading
+          system. Over 18 months, RabitAI evolved into an institutional-grade AI engine, delivering 2–5 actionable
+          signals daily with up to 87% win rates across equities, crypto, forex and commodities.</p>
+        <ul>
+          <li>No more gut feeling—pure logic and data</li>
+          <li>Multi-timeframe, multi-asset adaptability</li>
+          <li>Combines technicals, news, and AI reasoning</li>
+        </ul>
+        <p>This blueprint reveals the exact process, from architecture to execution, so you can understand and replicate
+          high-conviction AI trading signals.</p>
+      </div>
+    </div>
+
+    <div class="mb-5" id="architecture">
+      <h2 class="section-title">System Architecture</h2>
+      <div class="row">
+        <div class="col-md-6">
+          <h5>Data Flow</h5>
+          <ol>
+            <li>Ingest price data (Capital.com, yFinance fallback)</li>
+            <li>Extract technical indicators (15m, 30m, 1H, 4H)</li>
+            <li>Compute features: trend, momentum, volatility, sentiment</li>
+            <li>Score trades with <code>calculate_trade_probability()</code></li>
+            <li>Validate with GPT & news sentiment</li>
+            <li>Generate HTML report & chart, send via email</li>
+          </ol>
+        </div>
+        <div class="col-md-6">
+          <h5>Core Technologies</h5>
+          <ul>
+            <li><b>tradingview_ta</b> – technical indicators</li>
+            <li><b>openai</b> – GPT-4 for reasoning & sentiment</li>
+            <li><b>pandas, numpy, scipy</b> – data & modeling</li>
+            <li><b>scikit-learn</b> – regression & scaling</li>
+            <li><b>arch</b> – volatility modeling</li>
+            <li><b>feedparser, vaderSentiment, newsapi</b> – news & sentiment</li>
+            <li><b>smtplib, MIME</b> – email delivery</li>
+          </ul>
+        </div>
+      </div>
+      <div class="mt-3">
+        <h5>Modular Design</h5>
+        <ul>
+          <li><code>signals.py</code> – main runtime</li>
+          <li><code>feature_engineering.py</code> – feature construction</li>
+          <li><code>sentiment.py</code> – sentiment analysis</li>
+          <li><code>charting.py</code> – chart generation</li>
+          <li><code>email_report.py</code> – HTML/email output</li>
+          <li><code>execution.py</code> – trading API (optional)</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="mb-5" id="features">
+      <h2 class="section-title">Feature Engineering</h2>
+      <p>80% of the system's edge comes from robust feature engineering. RabitAI fuses technical, volatility, and
+        structure features across multiple timeframes.</p>
+      <div class="row">
+        <div class="col-md-6">
+          <h6>Technical Indicators (per timeframe)</h6>
+          <ul>
+            <li>RSI, Stochastic RSI</li>
+            <li>EMA(9), EMA(21)</li>
+            <li>MACD Histogram</li>
+            <li>ADX, +DI / -DI</li>
+            <li>CCI, Bollinger %B, MFI, OBV</li>
+          </ul>
+        </div>
+        <div class="col-md-6">
+          <h6>Volatility & Structure</h6>
+          <ul>
+            <li>ATR (Average True Range)</li>
+            <li>Shannon entropy (20-period log returns)</li>
+            <li>Bollinger Band width</li>
+            <li>Realized Volatility vs ATR</li>
+            <li>Trend strength (normalized ADX)</li>
+            <li>Slope angle (linear regression)</li>
+          </ul>
+        </div>
+      </div>
+      <div class="mt-3">
+        <h6>Sample Feature Extraction</h6>
+        <pre><code>def extract_features(df):
+    features = {}
+    # ...calculate indicators...
+    features['ema_gap'] = df['ema9'].iloc[-1] - df['ema21'].iloc[-1]
+    features['rsi'] = df['rsi'].iloc[-1]
+    features['adx'] = df['adx'].iloc[-1]
+    features['atr'] = df['atr'].iloc[-1]
+    features['cci'] = df['cci'].iloc[-1]
+    return features</code></pre>
+        <p>All features are normalized (Z-score or min-max) before being passed to the probability model.</p>
+      </div>
+    </div>
+
+    <div class="mb-5" id="regime">
+      <h2 class="section-title">Market Regime Detection</h2>
+      <p>RabitAI adapts to trending and mean-reverting markets by classifying regimes using entropy, ADX, and volatility
+        relationships.</p>
+      <div class="row">
+        <div class="col-md-6">
+          <h6>Detection Logic</h6>
+          <ul>
+            <li>Low entropy + high ADX → <b>Momentum</b></li>
+            <li>High entropy + low ADX → <b>Mean-Reverting</b></li>
+            <li>Volatility divergence → <b>Unstable</b></li>
+          </ul>
+        </div>
+        <div class="col-md-6">
+          <h6>Strategy Switching</h6>
+          <ul>
+            <li>Momentum: Breakouts, longer holds, wider TP</li>
+            <li>Mean-Reverting: Short trades, tighter SL, or skip</li>
+          </ul>
+        </div>
+      </div>
+      <pre><code>def detect_regime(features):
+    if features['entropy'] < 1.0 and features['adx'] > 25:
+        return 'momentum'
+    elif features['entropy'] > 1.7 and features['adx'] < 20:
+        return 'mean-reverting'
+    return 'neutral'</code></pre>
+    </div>
+
+    <div class="mb-5" id="probability">
+      <h2 class="section-title">Probability Scoring</h2>
+      <p>Each signal is scored for confidence using a logistic model, trend scaling, entropy filtering, and sentiment
+        alignment. Only high-confidence trades are sent.</p>
+      <pre><code>def calculate_trade_probability(features):
+    base = 0.0
+    base += 0.3 * (features['ema_gap'])
+    base += 0.25 * (features['rsi'] - 50)/50
+    base += 0.2 * (features['adx'] / 50)
+    base -= 0.15 * features['entropy']
+    prob = 1 / (1 + math.exp(-base))
+    return prob * 100</code></pre>
+      <div class="alert alert-info mt-3">
+        <b>Signals below 60% confidence are filtered out. Above 80%, trades may be auto-executed or prioritized.</b>
+      </div>
+    </div>
+
+    <div class="mb-5" id="sentiment">
+      <h2 class="section-title">News & Sentiment Filtering</h2>
+      <p>RabitAI integrates news headlines, client sentiment, VADER, and GPT-based summaries to avoid trading against
+        major news flow.</p>
+      <ol>
+        <li>Pull latest headlines per ticker</li>
+        <li>Score with VADER & keyword filters</li>
+        <li>Pass to GPT with indicator context</li>
+        <li>Compare GPT’s direction with signal</li>
+        <li>Penalize probability if mismatch</li>
+      </ol>
+      <pre><code>sentiment_score = analyzer.polarity_scores(news_text)['compound']
+if sentiment_score < -0.3 and signal == 'BUY':
+    confidence *= 0.8</code></pre>
+      <div class="alert alert-warning mt-3">
+        <b>Bearish news overrides bullish signals, reducing risk of false positives.</b>
+      </div>
+    </div>
+
+    <div class="mb-5" id="tp-sl">
+      <h2 class="section-title">TP/SL Prediction</h2>
+      <p>Take Profit and Stop Loss levels are set dynamically based on volatility and market regime, not static
+        percentages.</p>
+      <ul>
+        <li>ATR as volatility proxy</li>
+        <li>High entropy → tighter SL</li>
+        <li>Strong signals → wider TP</li>
+      </ul>
+      <pre><code>def calculate_tp_sl(current_price, atr, regime):
+    if regime == 'momentum':
+        sl = current_price - atr * 1.2
+        tp = current_price + atr * 2.5
+    elif regime == 'mean-reverting':
+        sl = current_price - atr * 1.0
+        tp = current_price + atr * 1.5
+    else:
+        sl = current_price - atr * 1.1
+        tp = current_price + atr * 2.0
+    return round(tp, 2), round(sl, 2)</code></pre>
+    </div>
+
+    <div class="mb-5" id="gpt">
+      <h2 class="section-title">Signal Reasoning with GPT</h2>
+      <p>Every trade is reviewed by GPT-4, which analyzes technicals, sentiment, price structure, and volatility, then
+        provides a rationale.</p>
+      <pre><code>prompt = f"""
+Analyze the following trade setup:
+Symbol: {{symbol}}
+Direction: {{direction}}
+Timeframes: 15m, 30m, 1H, 4H
+Indicators: {{indicator_summary}}
+News Headlines: {{headline_summary}}
+Entropy: {{entropy}}
+ATR: {{atr}}
+
+Should this trade be executed? If yes, why? What risk factors are present?
+"""</code></pre>
+      <div class="callout mt-3">
+        <b>Only signals with alignment across technicals, sentiment, and GPT summary are sent to users or execution
+          queues.</b>
+      </div>
+    </div>
+
+    <div class="mb-5" id="report">
+      <h2 class="section-title">Trade Report Output</h2>
+      <p>Qualified signals are packaged into a polished HTML report, sent via email or Discord. Each report includes:</p>
+      <ul>
+        <li>Symbol, timeframes, entry, SL, TP</li>
+        <li>Direction, confidence score</li>
+        <li>GPT-generated summary</li>
+        <li>News sentiment notes</li>
+        <li>Embedded chart with TP/SL</li>
+      </ul>
+      <div class="table-responsive">
+        <table class="table table-bordered">
+          <tr>
+            <th>Symbol</th>
+            <td>TSLA</td>
+          </tr>
+          <tr>
+            <th>Direction</th>
+            <td>BUY</td>
+          </tr>
+          <tr>
+            <th>Entry</th>
+            <td>$176.20</td>
+          </tr>
+          <tr>
+            <th>TP</th>
+            <td>$182.60</td>
+          </tr>
+          <tr>
+            <th>SL</th>
+            <td>$172.80</td>
+          </tr>
+          <tr>
+            <th>Confidence</th>
+            <td>84%</td>
+          </tr>
+        </table>
+      </div>
+      <div class="mt-3">
+        <h6>Chart Rendering (Python)</h6>
+        <pre><code>fig, ax = plt.subplots()
+ax.plot(df['close'], label='Price')
+ax.axhline(tp, color='green', linestyle='--', label='TP')
+ax.axhline(sl, color='red', linestyle='--', label='SL')
+# ...
+img_buf = io.BytesIO()
+plt.savefig(img_buf, format='png')
+img_base64 = base64.b64encode(img_buf.getvalue()).decode()</code></pre>
+      </div>
+    </div>
+
+    <div class="mb-5" id="portfolio">
+      <h2 class="section-title">Portfolio Integration & Risk</h2>
+      <p>RabitAI manages risk at the portfolio level, adjusting position size and filtering overlapping or correlated
+        trades.</p>
+      <ul>
+        <li>Position sizing based on confidence and volatility</li>
+        <li>Limits on sector/correlation exposure</li>
+        <li>Daily portfolio summary output</li>
+      </ul>
+      <pre><code>def determine_position_size(probability, atr, account_balance):
+    risk_pct = min(0.02, probability / 100 * 0.03)
+    dollar_risk = account_balance * risk_pct
+    position_size = dollar_risk / atr
+    return round(position_size, 2)</code></pre>
+      <div class="mt-3">
+        <h6>Sample Portfolio Summary</h6>
+        <pre><code>{
+  "date": "2025-05-26",
+  "total_signals": 4,
+  "executed": 2,
+  "capital_allocated": "$4,000",
+  "estimated_risk": "$120",
+  "expected_return": "$360"
+}</code></pre>
+      </div>
+    </div>
+
+    <div class="mb-5" id="lessons">
+      <h2 class="section-title">Lessons Learned</h2>
+      <div class="row">
+        <div class="col-md-6">
+          <div class="callout">
+            <b>Simplicity Beats Complexity:</b> Focus on high-impact features, not dozens of indicators.
+          </div>
+          <div class="callout">
+            <b>GPT Adds Value—If Scoped:</b> Strict prompts yield reliable trade justifications.
+          </div>
+          <div class="callout">
+            <b>Filtering > Forecasting:</b> Skipping bad setups is more important than perfect entries.
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="callout">
+            <b>Portfolio Logic Early:</b> Exposure rules and volatility caps improve outcomes.
+          </div>
+          <div class="callout">
+            <b>Users Want Narratives:</b> Numeric confidence + GPT reasoning builds trust.
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="mb-5" id="join">
+      <h2 class="section-title">Join the Mission</h2>
+      <p>RabitAI is now public. Choose your path:</p>
+      <ol>
+        <li>Free 30-day trial: Test daily signals in our private Discord</li>
+        <li>Monthly subscription: Real-time alerts, email reports, Discord access</li>
+        <li>Build your own: Use this blueprint, adapt the code, or hire us for custom solutions</li>
+      </ol>
+      <a href="https://www.rabitai.trade" target="_blank" class="btn" tyle="background-color: rgb(226, 43, 198);">JOIN THE COMMUNITY</a>
+    </div>
+
+    <div class="mb-5" id="appendix">
+      <h2 class="section-title">Appendix</h2>
+      <div class="row">
+        <div class="col-md-4">
+          <h6>Source Code Modules</h6>
+          <ul>
+            <li><code>extract_features()</code></li>
+            <li><code>calculate_trade_probability()</code></li>
+            <li><code>calculate_tp_sl()</code></li>
+            <li><code>generate_prompt()</code></li>
+            <li><code>render_chart()</code></li>
+            <li><code>send_email_report()</code></li>
+          </ul>
+        </div>
+        <div class="col-md-4">
+          <h6>API & Environment</h6>
+          <ul>
+            <li>OPENAI_API_KEY</li>
+            <li>NEWS_API_KEY</li>
+            <li>EMAIL_USER, EMAIL_PASS</li>
+            <li>CAPITAL_API_KEY / ALPACA_API_KEY</li>
+          </ul>
+          <pre><code>
+from dotenv import load_dotenv
+load_dotenv('signals_cred.env')
+OPENAI_API_KEY = os.getenv('OPENAI_API_KEY')</code></pre>
+        </div>
+        <div class="col-md-4">
+          <h6>Datasets & Libraries</h6>
+          <ul>
+            <li>Yahoo Finance, Capital.com, NewsAPI</li>
+            <li>ta, scikit-learn, statsmodels, arch, matplotlib</li>
+            <li>feedparser, vaderSentiment, openai, dotenv, requests, pandas, numpy, tweepy</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <footer class="text-center text-muted py-4">
+      <hr>
+      <p>For setup help, Discord access, or custom solutions, visit <a href="https://www.rabitai.trade" target="_blank">rabitai.trade</a>
+        or DM <b>@rabitaitrades</b> on X.</p>
+      <p>&copy; 2025 RabitAI Trading Signals</p>
+    </footer>
+  </div>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+
+</html>
